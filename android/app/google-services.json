@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "386276655362",
+    "project_id": "code-bro-notes",
+    "storage_bucket": "code-bro-notes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386276655362:android:afcc23c13f4892f659c21b",
+        "android_client_info": {
+          "package_name": "com.example.mynote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386276655362-651b59r01jp7okjbqn7de0j2md6c5f6d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBboq9rP45uiBebRzIDvVf2T7qAETsN8zk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386276655362-651b59r01jp7okjbqn7de0j2md6c5f6d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
