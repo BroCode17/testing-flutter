@@ -82,6 +82,9 @@ class _RegisterViewState extends State<RegisterView> {
                       }
 
                     }, child: const Text("Register")),
+                    TextButton(onPressed: (){
+                      Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+                    }, child: const Text("Already registered? Login here!")),
                   ],
                 );
               default:
@@ -90,6 +93,45 @@ class _RegisterViewState extends State<RegisterView> {
 
           }
       ),
+    );
+    return Column(
+      children:  [
+        TextField(
+          controller: _email,
+          autocorrect: false,
+          enableSuggestions: false,
+          keyboardType: TextInputType.emailAddress,
+          decoration: const InputDecoration(
+            hintText: "Enter your email",
+          ),
+        ),
+        TextField(
+          controller: _password,
+          obscureText: true,
+          enableSuggestions: false,
+          autocorrect: false,
+          decoration: const InputDecoration(
+            hintText: "Enter your password",
+          ),
+        ),
+        TextButton(onPressed: () async {
+          final email = _email.text;
+          final password = _password.text;
+          try{
+            final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+          }on FirebaseAuthException catch(e){
+            //Todo: code
+            print(e.code);
+            if(e.code == 'weak-password')
+              print("Weak Password");
+            else if(e.code =='email-already-in-use')
+              print("Email is already in use");
+            else if(e.code == 'invalid-email')
+              print("Invalid email");
+          }
+
+        }, child: const Text("Register")),
+      ],
     );
   }
 }
