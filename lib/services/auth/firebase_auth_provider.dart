@@ -1,16 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:mynote/firebase_options.dart';
 import 'package:mynote/services/auth/auth_user.dart';
 import 'package:mynote/services/auth/auth_exceptions.dart';
 import 'package:mynote/services/auth/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException;
+import 'dart:developer' as dev show log;
 
 class FirebaseAuthProvider implements AuthProvider {
   @override
   Future<AuthUser> createUser(
       {required String email, required String password,}) async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final me = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email, password: password);
+      dev.log(me.toString());
       final user = currentUser;
       if (user != null) {
         return user;
@@ -49,8 +53,9 @@ class FirebaseAuthProvider implements AuthProvider {
   Future<AuthUser> logIn(
       {required String email, required String password,}) async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final me = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email, password: password);
+      dev.log("this ${me.toString()}");
       final user = currentUser;
       if (user != null) {
         return user;
@@ -92,6 +97,13 @@ class FirebaseAuthProvider implements AuthProvider {
     } else {
       throw UserNotLoggedInAuthException();
     }
+  }
+
+  @override
+  Future<void> initialize() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
   }
 
 }
