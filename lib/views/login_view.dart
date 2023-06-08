@@ -78,21 +78,31 @@ class _LoginViewState extends State<LoginView> {
                             email: email,
                             password: password,
                           );
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              noteRoute, (route) => false);
+                          //Check if user's email is verified
+                          final currentUser = FirebaseAuth
+                                  .instance.currentUser?.emailVerified ??
+                              false;
+                          if (currentUser) {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                noteRoute, (route) => false);
+                          } else {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                verifyEmailRoute, (route) => false);
+                          }
                         } on FirebaseAuthException catch (e) {
                           dev.log(e.code);
                           if (e.code == "user-not-found") {
-                             await showErrorDialog(context, "User not found");
+                            await showErrorDialog(context, "User not found");
                           } else if (e.code == "wrong-password") {
                             await showErrorDialog(context, "Wrong Password");
-                          } else if(e.code == 'invalid-email'){
+                          } else if (e.code == 'invalid-email') {
                             await showErrorDialog(context, "Invalid Email");
-                          } else{
+                          } else {
                             await showErrorDialog(context, "Error: ${e.code}");
                           }
-                        }catch(e){
-                          await showErrorDialog(context, "Error: ${e.toString()}");
+                        } catch (e) {
+                          await showErrorDialog(
+                              context, "Error: ${e.toString()}");
                         }
                       },
                       child: const Text("Login")),
@@ -159,4 +169,3 @@ class _LoginViewState extends State<LoginView> {
     // );
   }
 }
-

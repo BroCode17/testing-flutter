@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mynote/constants/routes.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({Key? key}) : super(key: key);
@@ -11,20 +12,40 @@ class VerifyEmailView extends StatefulWidget {
 class _VerifyEmailViewState extends State<VerifyEmailView> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text("Please verify your email"),
-        TextButton(
-            onPressed: () async {
-              final user = FirebaseAuth.instance.currentUser;
-              print(user);
-              await user?.sendEmailVerification();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Verify Email"),
+      ),
+      body: Column(
+        children: [
+          const Text(
+              "We've sent you an email verification, please open and verify your account"),
+          const Text(
+              "If you have not received a verification email yet, press the button below"),
+          TextButton(
+              onPressed: () async {
+                final user = FirebaseAuth.instance.currentUser;
+                print(user);
+                await user?.sendEmailVerification();
+              },
+              child: const Text("Send email verification")),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil("/login", (route) => false);
             },
-            child: const Text("Send email verification")),
-        TextButton(onPressed: (){
-          Navigator.of(context).pushNamedAndRemoveUntil("/login", (route) => false);
-        }, child: const Text("Back to login")),
-      ],
+            child: const Text("Back to login"),
+          ),
+          TextButton(
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil(registerRoute, (route) => false);
+            },
+            child: const Text("Restart"),
+          ),
+        ],
+      ),
     );
   }
 }
